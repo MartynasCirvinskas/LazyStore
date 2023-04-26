@@ -2,13 +2,11 @@ import FuseUtils from '@fuse/utils';
 import FuseLoading from '@fuse/core/FuseLoading';
 import { Navigate } from 'react-router-dom';
 import settingsConfig from 'app/configs/settingsConfig';
-import SignInConfig from '../main/sign-in/SignInConfig';
-import SignOutConfig from '../main/sign-out/SignOutConfig';
 import Error404Page from '../main/404/Error404Page';
 import ExampleConfig from '../main/example/ExampleConfig';
 import ProductsConfig from '../main/products/ProductsConfig';
 
-const routeConfigs = [ExampleConfig, SignOutConfig, SignInConfig,ProductsConfig];
+const routeConfigs = [ExampleConfig,ProductsConfig];
 
 const routes = [
   ...FuseUtils.generateRoutesFromConfigs(routeConfigs, settingsConfig.defaultAuth),
