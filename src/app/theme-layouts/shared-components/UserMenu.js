@@ -65,20 +65,12 @@ function UserMenu(props) {
         }}
       >
         {!user.role || user.role.length === 0 ? (
-          <>
             <MenuItem component={Link} to="/sign-in" role="button">
               <ListItemIcon className="min-w-40">
                 <FuseSvgIcon>heroicons-outline:lock-closed</FuseSvgIcon>
               </ListItemIcon>
               <ListItemText primary="Sign In" />
             </MenuItem>
-            <MenuItem component={Link} to="/sign-up" role="button">
-              <ListItemIcon className="min-w-40">
-                <FuseSvgIcon>heroicons-outline:user-add </FuseSvgIcon>
-              </ListItemIcon>
-              <ListItemText primary="Sign up" />
-            </MenuItem>
-          </>
         ) : (
           <>
             <MenuItem component={Link} to="/apps/profile" onClick={userMenuClose} role="button">

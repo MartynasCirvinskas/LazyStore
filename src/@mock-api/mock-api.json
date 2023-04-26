@@ -112,51 +112,7 @@
       },
       "parameters": []
     },
-    "/auth/sign-up": {
-      "get": {
-        "summary": "Sign Up",
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/auth_user"
-                },
-                "examples": {
-                  "example-1": {
-                    "value": {
-                      "uuid": "string",
-                      "from": "string",
-                      "password": "string",
-                      "role": "string",
-                      "data": {
-                        "displayName": "string",
-                        "photoURL": "string",
-                        "email": "string",
-                        "settings": {
-                          "layout": {},
-                          "theme": {}
-                        },
-                        "shortcuts": [
-                          "string"
-                        ]
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        },
-        "operationId": "auth_signUp",
-        "description": "Retrieve user.",
-        "tags": [
-          "auth"
-        ]
-      },
-      "parameters": []
-    },
+  
     "/auth/access-token": {
       "get": {
         "summary": "Sign in with access token",
@@ -7251,16 +7207,6 @@
           }
         },
         "x-examples": {
-          "example-1": {
-            "id": "8f8e1bf9-4661-4939-9e43-390957b60f42",
-            "icon": "heroicons-solid:star",
-            "title": "Daily challenges",
-            "description": "Your submission has been accepted and you are ready to sign-up for the final assigment which will be ready in 2 days",
-            "time": "2022-05-06T10:57:42.703Z",
-            "read": true,
-            "link": "/dashboards/project",
-            "useRouter": true
-          }
         },
         "title": ""
       },
@@ -32761,16 +32707,6 @@
             "time": "2022-05-08T10:57:42.703Z",
             "read": true,
             "link": "/apps/mailbox",
-            "useRouter": true
-          },
-          {
-            "id": "8f8e1bf9-4661-4939-9e43-390957b60f42",
-            "icon": "heroicons-solid:star",
-            "title": "Daily challenges",
-            "description": "Your submission has been accepted and you are ready to sign-up for the final assigment which will be ready in 2 days",
-            "time": "2022-05-06T10:57:42.703Z",
-            "read": true,
-            "link": "/dashboards/project",
             "useRouter": true
           },
           {

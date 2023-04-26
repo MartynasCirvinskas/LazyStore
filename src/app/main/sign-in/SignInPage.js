@@ -6,10 +6,9 @@ import FormControl from '@mui/material/FormControl';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
-import { Link } from 'react-router-dom';
 import * as yup from 'yup';
 import _ from '@lodash';
-import FuseSvgIcon from '@fuse/core/FuseSvgIcon';
+
 import AvatarGroup from '@mui/material/AvatarGroup';
 import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
@@ -73,13 +72,6 @@ function SignInPage() {
           <Typography className="mt-32 text-4xl font-extrabold tracking-tight leading-tight">
             Sign in
           </Typography>
-          <div className="flex items-baseline mt-2 font-medium">
-            <Typography>Don't have an account?</Typography>
-            <Link className="ml-4" to="/sign-up">
-              Sign up
-            </Link>
-          </div>
-
           <form
             name="loginForm"
             noValidate
@@ -137,9 +129,7 @@ function SignInPage() {
                 )}
               />
 
-              <Link className="text-md font-medium" to="/pages/auth/forgot-password">
-                Forgot password?
-              </Link>
+
             </div>
 
             <Button
@@ -153,32 +143,6 @@ function SignInPage() {
             >
               Sign in
             </Button>
-
-            <div className="flex items-center mt-32">
-              <div className="flex-auto mt-px border-t" />
-              <Typography className="mx-8" color="text.secondary">
-                Or continue with
-              </Typography>
-              <div className="flex-auto mt-px border-t" />
-            </div>
-
-            <div className="flex items-center mt-32 space-x-16">
-              <Button variant="outlined" className="flex-auto">
-                <FuseSvgIcon size={20} color="action">
-                  feather:facebook
-                </FuseSvgIcon>
-              </Button>
-              <Button variant="outlined" className="flex-auto">
-                <FuseSvgIcon size={20} color="action">
-                  feather:twitter
-                </FuseSvgIcon>
-              </Button>
-              <Button variant="outlined" className="flex-auto">
-                <FuseSvgIcon size={20} color="action">
-                  feather:github
-                </FuseSvgIcon>
-              </Button>
-            </div>
           </form>
         </div>
       </Paper>

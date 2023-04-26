@@ -72,52 +72,6 @@ mock.onGet('/api/auth/access-token').reply((config) => {
   return [401, { error }];
 });
 
-mock.onPost('/api/auth/sign-up').reply((request) => {
-  const data = JSON.parse(request.data);
-  const { displayName, password, email } = data;
-  const isEmailExists = usersApi.find((_user) => _user.data.email === email);
-  const error = [];
-
-  if (isEmailExists) {
-    error.push({
-      type: 'email',
-      message: 'The email address is already in use',
-    });
-  }
-
-  if (error.length === 0) {
-    const newUser = {
-      uuid: FuseUtils.generateGUID(),
-      from: 'custom-db',
-      password,
-      role: 'admin',
-      data: {
-        displayName,
-        photoURL: 'assets/images/avatars/Abbott.jpg',
-        email,
-        settings: {},
-        shortcuts: [],
-      },
-    };
-
-    usersApi = [...usersApi, newUser];
-
-    const user = _.cloneDeep(newUser);
-
-    delete user.password;
-
-    const access_token = generateJWTToken({ id: user.uuid });
-
-    const response = {
-      user,
-      access_token,
-    };
-
-    return [200, response];
-  }
-  return [200, { error }];
-});
-
 mock.onPost('/api/auth/user/update').reply((config) => {
   const data = JSON.parse(config.data);
   const { user } = data;
