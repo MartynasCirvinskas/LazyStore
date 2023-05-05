@@ -2,9 +2,9 @@ import { createAsyncThunk, createEntityAdapter, createSlice } from '@reduxjs/too
 import axios from 'axios';
 
 export const getProducts = createAsyncThunk('eCommerceApp/products/getProducts', async () => {
-  const response = await axios.get('/api/ecommerce/products');
+  const response = await axios.get('http://127.0.0.1:5000/');
   const data = await response.data;
-
+  console.log('getProducts data:', data);
   return data;
 });
 
@@ -17,10 +17,14 @@ export const removeProducts = createAsyncThunk(
   }
 );
 
-const productsAdapter = createEntityAdapter({});
+const productsAdapter = createEntityAdapter({
+  selectId: (product) => product.product_id
+});
 
 export const { selectAll: selectProducts, selectById: selectProductById } =
   productsAdapter.getSelectors((state) => state.eCommerceApp.products);
+
+
 
 const productsSlice = createSlice({
   name: 'eCommerceApp/products',
@@ -30,6 +34,7 @@ const productsSlice = createSlice({
   reducers: {
     setProductsSearchText: {
       reducer: (state, action) => {
+        console.log('setProductsSearchText payload:', action.payload);
         state.searchText = action.payload;
       },
       prepare: (event) => ({ payload: event.target.value || '' }),

@@ -1,13 +1,29 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
 import FuseUtils from '@fuse/utils';
+import { selectProducts } from './productsSlice'; // Make sure to use the correct path to your productsSlice
 
-export const getProduct = createAsyncThunk('eCommerceApp/product/getProduct', async (productId) => {
-  const response = await axios.get(`/api/ecommerce/products/${productId}`);
-  const data = await response.data;
+export const getProduct = createAsyncThunk(
+  'eCommerceApp/product/getProduct',
+  async (productId, { getState }) => {
+    // Get the products from the state
+    const products = selectProducts(getState());
 
-  return data === undefined ? null : data;
-});
+    // Find the product in the products list
+    const product = products.find((p) => p.product_id === productId);
+
+    // If product is found, return it, otherwise make an API call
+    if (product) {
+      return product;
+    } 
+    else {
+      const response = await axios.get(`/api/ecommerce/products/${productId}`);
+      const data = await response.data;
+      return data === undefined ? null : data;
+    }
+  }
+);
+
 
 export const removeProduct = createAsyncThunk(
   'eCommerceApp/product/removeProduct',

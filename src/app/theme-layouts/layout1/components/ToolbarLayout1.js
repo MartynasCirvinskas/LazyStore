@@ -8,7 +8,6 @@ import { useSelector } from 'react-redux';
 import { selectFuseCurrentLayoutConfig, selectToolbarTheme } from 'app/store/fuse/settingsSlice';
 import { selectFuseNavbar } from 'app/store/fuse/navbarSlice';
 import FullScreenToggle from '../../shared-components/FullScreenToggle';
-import NotificationPanelToggleButton from '../../shared-components/notificationPanel/NotificationPanelToggleButton';
 import NavigationShortcuts from '../../shared-components/NavigationShortcuts';
 import NavigationSearch from '../../shared-components/NavigationSearch';
 import NavbarToggleButton from '../../shared-components/NavbarToggleButton';
@@ -67,10 +66,7 @@ function ToolbarLayout1(props) {
 
             <NavigationSearch />
 
-
             <QuickPanelToggleButton />
-
-            <NotificationPanelToggleButton />
 
           </div>
           {config.navbar.display && config.navbar.position === 'right' && (

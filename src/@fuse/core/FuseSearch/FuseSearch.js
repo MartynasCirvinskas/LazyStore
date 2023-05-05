@@ -136,6 +136,8 @@ function renderSuggestion(suggestion, { query, isHighlighted }) {
 }
 
 function getSuggestions(value, data) {
+  console.log("---------------------")
+  console.log(value)
   const inputValue = _.deburr(value.trim()).toLowerCase();
   const inputLength = inputValue.length;
   let count = 0;

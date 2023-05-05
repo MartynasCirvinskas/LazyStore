@@ -1,22 +1,26 @@
-import FuseScrollbars from '@fuse/core/FuseScrollbars';
-import _ from '@lodash';
-import Checkbox from '@mui/material/Checkbox';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TablePagination from '@mui/material/TablePagination';
-import TableRow from '@mui/material/TableRow';
-import Typography from '@mui/material/Typography';
-import clsx from 'clsx';
-import { motion } from 'framer-motion';
-import { useEffect, useState } from 'react';
+import FuseScrollbars from "@fuse/core/FuseScrollbars";
+import _ from "@lodash";
+import Checkbox from "@mui/material/Checkbox";
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TablePagination from "@mui/material/TablePagination";
+import TableRow from "@mui/material/TableRow";
+import Typography from "@mui/material/Typography";
+import clsx from "clsx";
+import { motion } from "framer-motion";
+import { useEffect, useState } from "react";
 
-import { useDispatch, useSelector } from 'react-redux';
-import withRouter from '@fuse/core/withRouter';
-import FuseLoading from '@fuse/core/FuseLoading';
-import FuseSvgIcon from '@fuse/core/FuseSvgIcon';
-import { getProducts, selectProducts, selectProductsSearchText } from '../store/productsSlice';
-import ProductsTableHead from './ProductsTableHead';
+import { useDispatch, useSelector } from "react-redux";
+import withRouter from "@fuse/core/withRouter";
+import FuseLoading from "@fuse/core/FuseLoading";
+import FuseSvgIcon from "@fuse/core/FuseSvgIcon";
+import {
+  getProducts,
+  selectProducts,
+  selectProductsSearchText,
+} from "../store/productsSlice";
+import ProductsTableHead from "./ProductsTableHead";
 
 function ProductsTable(props) {
   const dispatch = useDispatch();
@@ -29,18 +33,36 @@ function ProductsTable(props) {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [order, setOrder] = useState({
-    direction: 'asc',
+    direction: "asc",
     id: null,
   });
 
   useEffect(() => {
-    dispatch(getProducts()).then(() => setLoading(false));
-  }, [dispatch]);
+    if (products.length === 0) {
+      dispatch(getProducts()).then(() => setLoading(false));
+    } else {
+      setLoading(false);
+    }
+  }, [dispatch, products]);
 
   useEffect(() => {
-    if (searchText.length !== 0) {
+    if (searchText.length !== 0 && products) {
       setData(
-        _.filter(products, (item) => item.name.toLowerCase().includes(searchText.toLowerCase()))
+        _.filter(
+          products,
+          (item) =>
+            item.product_title
+              .toLowerCase()
+              .includes(searchText.toLowerCase()) ||
+            (item.sku_list &&
+              item.sku_list.some((sku) =>
+                sku.toLowerCase().includes(searchText.toLowerCase())
+              )) ||
+            (item.ean_list &&
+              item.ean_list.some((ean) =>
+                ean.toLowerCase().includes(searchText.toLowerCase())
+              ))
+        )
       );
       setPage(0);
     } else {
@@ -50,10 +72,10 @@ function ProductsTable(props) {
 
   function handleRequestSort(event, property) {
     const id = property;
-    let direction = 'desc';
+    let direction = "desc";
 
-    if (order.id === property && order.direction === 'desc') {
-      direction = 'asc';
+    if (order.id === property && order.direction === "desc") {
+      direction = "asc";
     }
 
     setOrder({
@@ -75,7 +97,7 @@ function ProductsTable(props) {
   }
 
   function handleClick(item) {
-    props.navigate(`/apps/e-commerce/products/${item.id}/${item.handle}`);
+    props.navigate(`/products/${item.product_id}`);
   }
 
   function handleCheck(event, id) {
@@ -147,7 +169,7 @@ function ProductsTable(props) {
               [
                 (o) => {
                   switch (order.id) {
-                    case 'categories': {
+                    case "categories": {
                       return o.categories[0];
                     }
                     default: {
@@ -168,11 +190,14 @@ function ProductsTable(props) {
                     role="checkbox"
                     aria-checked={isSelected}
                     tabIndex={-1}
-                    key={n.id}
+                    key={n.product_id}
                     selected={isSelected}
                     onClick={(event) => handleClick(n)}
                   >
-                    <TableCell className="w-40 md:w-64 text-center" padding="none">
+                    <TableCell
+                      className="w-40 md:w-64 text-center"
+                      padding="none"
+                    >
                       <Checkbox
                         checked={isSelected}
                         onClick={(event) => event.stopPropagation()}
@@ -186,35 +211,41 @@ function ProductsTable(props) {
                       scope="row"
                       padding="none"
                     >
-                      {n.images.length > 0 && n.featuredImageId ? (
-                        <img
-                          className="w-full block rounded"
-                          src={_.find(n.images, { id: n.featuredImageId }).url}
-                          alt={n.name}
-                        />
-                      ) : (
-                        <img
-                          className="w-full block rounded"
-                          src="assets/images/apps/ecommerce/product-image-placeholder.png"
-                          alt={n.name}
-                        />
-                      )}
-                    </TableCell>
-
-                    <TableCell className="p-4 md:p-16" component="th" scope="row">
+                      <img
+                        className="w-full block rounded"
+                        src={`assets/images/products/${n.product_id}.jpg`}
+                        alt={n.name}
+                      />
                       {n.name}
                     </TableCell>
 
-                    <TableCell className="p-4 md:p-16 truncate" component="th" scope="row">
-                      {n.categories.join(', ')}
+                    <TableCell
+                      className="p-4 md:p-16"
+                      component="th"
+                      scope="row"
+                    >
+                      {n.product_title}
                     </TableCell>
 
-                    <TableCell className="p-4 md:p-16" component="th" scope="row" align="right">
+                    <TableCell
+                      className="p-4 md:p-16 truncate"
+                      component="th"
+                      scope="row"
+                    >
+                      {n.ean_list.join(", ")}
+                    </TableCell>
+
+                    <TableCell
+                      className="p-4 md:p-16"
+                      component="th"
+                      scope="row"
+                      align="right"
+                    >
                       <span>$</span>
-                      {n.priceTaxIncl}
+                      {n.product_id}
                     </TableCell>
 
-                    <TableCell className="p-4 md:p-16" component="th" scope="row" align="right">
+                    {/* <TableCell className="p-4 md:p-16" component="th" scope="row" align="right">
                       {n.quantity}
                       <i
                         className={clsx(
@@ -236,7 +267,7 @@ function ProductsTable(props) {
                           heroicons-outline:minus-circle
                         </FuseSvgIcon>
                       )}
-                    </TableCell>
+                    </TableCell> */}
                   </TableRow>
                 );
               })}
@@ -251,10 +282,10 @@ function ProductsTable(props) {
         rowsPerPage={rowsPerPage}
         page={page}
         backIconButtonProps={{
-          'aria-label': 'Previous Page',
+          "aria-label": "Previous Page",
         }}
         nextIconButtonProps={{
-          'aria-label': 'Next Page',
+          "aria-label": "Next Page",
         }}
         onPageChange={handleChangePage}
         onRowsPerPageChange={handleChangeRowsPerPage}

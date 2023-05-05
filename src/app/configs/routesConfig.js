@@ -5,8 +5,9 @@ import settingsConfig from 'app/configs/settingsConfig';
 import Error404Page from '../main/404/Error404Page';
 import ExampleConfig from '../main/example/ExampleConfig';
 import ProductsConfig from '../main/products/ProductsConfig';
+import ProductConfig from '../main/product/ProductConfig';
 
-const routeConfigs = [ExampleConfig,ProductsConfig];
+const routeConfigs = [ExampleConfig,ProductsConfig,ProductConfig];
 
 const routes = [
   ...FuseUtils.generateRoutesFromConfigs(routeConfigs, settingsConfig.defaultAuth),
