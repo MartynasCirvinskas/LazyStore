@@ -1,4 +1,5 @@
 import FuseScrollbars from "@fuse/core/FuseScrollbars";
+import moment from "moment";
 import _ from "@lodash";
 import Checkbox from "@mui/material/Checkbox";
 import Table from "@mui/material/Table";
@@ -16,21 +17,20 @@ import withRouter from "@fuse/core/withRouter";
 import FuseLoading from "@fuse/core/FuseLoading";
 import FuseSvgIcon from "@fuse/core/FuseSvgIcon";
 import {
-    getProducts,
-    selectProducts,
-    selectProductsSearchText,
-} from "../store/productsSlice";
-import ProductsTableHead from "./ProductsTableHead";
+    getPurchases,
+    selectPurchases,
+    selectPurchasesSearchText,
+} from "../store/purchasesSlice";
+import PurchasesTableHead from "./PurchasesTableHead";
 
-function ProductsTable(props) {
+function PurchasesTable(props) {
     const dispatch = useDispatch();
-    const products = useSelector(selectProducts);
-    const searchText = useSelector(selectProductsSearchText);
-    console.log(searchText);
+    const purchases = useSelector(selectPurchases);
+    const searchText = useSelector(selectPurchasesSearchText);
 
     const [loading, setLoading] = useState(true);
     const [selected, setSelected] = useState([]);
-    const [data, setData] = useState(products);
+    const [data, setData] = useState(purchases);
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(10);
     const [order, setOrder] = useState({
@@ -39,18 +39,18 @@ function ProductsTable(props) {
     });
 
     useEffect(() => {
-        if (products.length === 0) {
-            dispatch(getProducts()).then(() => setLoading(false));
+        if (purchases.length === 0) {
+            dispatch(getPurchases()).then(() => setLoading(false));
         } else {
             setLoading(false);
         }
-    }, [dispatch, products]);
+    }, [dispatch, purchases]);
 
     useEffect(() => {
-        if (searchText.length !== 0 && products) {
+        if (searchText.length !== 0 && purchases) {
             setData(
                 _.filter(
-                    products,
+                    purchases,
                     (item) =>
                         item.product_title
                             .toLowerCase()
@@ -71,9 +71,9 @@ function ProductsTable(props) {
             );
             setPage(0);
         } else {
-            setData(products);
+            setData(purchases);
         }
-    }, [products, searchText]);
+    }, [purchases, searchText]);
 
     function handleRequestSort(event, property) {
         const id = property;
@@ -102,7 +102,7 @@ function ProductsTable(props) {
     }
 
     function handleClick(item) {
-        props.navigate(`/products/${item.product_id}`);
+        props.navigate(`/purchases/${item.purchase_id}`);
     }
 
     function handleCheck(event, id) {
@@ -163,7 +163,7 @@ function ProductsTable(props) {
                     className="min-w-xl"
                     aria-labelledby="tableTitle"
                 >
-                    <ProductsTableHead
+                    <PurchasesTableHead
                         selectedProductIds={selected}
                         order={order}
                         onSelectAllClick={handleSelectAllClick}
@@ -223,25 +223,11 @@ function ProductsTable(props) {
                                         </TableCell>
 
                                         <TableCell
-                                            className="w-52 px-4 md:px-0"
-                                            component="th"
-                                            scope="row"
-                                            padding="none"
-                                        >
-                                            <img
-                                                className="w-full block rounded"
-                                                src={`assets/images/products/${n.product_id}.jpg`}
-                                                alt={n.name}
-                                            />
-                                            {n.name}
-                                        </TableCell>
-
-                                        <TableCell
                                             className="p-4 md:p-16"
                                             component="th"
                                             scope="row"
                                         >
-                                            {n.product_title}
+                                            {n.invoice_nr}
                                         </TableCell>
 
                                         <TableCell
@@ -249,42 +235,26 @@ function ProductsTable(props) {
                                             component="th"
                                             scope="row"
                                         >
-                                            {n.ean_list.join(", ")}
+                                            {n.supplier}
                                         </TableCell>
 
                                         <TableCell
                                             className="p-4 md:p-16"
                                             component="th"
                                             scope="row"
-                                            align="right"
                                         >
                                             <span>$</span>
-                                            {n.product_id}
+                                            {n.total_price}
                                         </TableCell>
-
-                                        {/* <TableCell className="p-4 md:p-16" component="th" scope="row" align="right">
-                      {n.quantity}
-                      <i
-                        className={clsx(
-                          'inline-block w-8 h-8 rounded mx-8',
-                          n.quantity <= 5 && 'bg-red',
-                          n.quantity > 5 && n.quantity <= 25 && 'bg-orange',
-                          n.quantity > 25 && 'bg-green'
-                        )}
-                      />
-                    </TableCell>
-
-                    <TableCell className="p-4 md:p-16" component="th" scope="row" align="right">
-                      {n.active ? (
-                        <FuseSvgIcon className="text-green" size={20}>
-                          heroicons-outline:check-circle
-                        </FuseSvgIcon>
-                      ) : (
-                        <FuseSvgIcon className="text-red" size={20}>
-                          heroicons-outline:minus-circle
-                        </FuseSvgIcon>
-                      )}
-                    </TableCell> */}
+                                        <TableCell
+                                            className="p-4 md:p-16 truncate"
+                                            component="th"
+                                            scope="row"
+                                        >
+                                            {moment(n.date).format(
+                                                "MM/DD/YYYY",
+                                            )}
+                                        </TableCell>
                                     </TableRow>
                                 );
                             })}
@@ -311,4 +281,4 @@ function ProductsTable(props) {
     );
 }
 
-export default withRouter(ProductsTable);
+export default withRouter(PurchasesTable);

@@ -1,6 +1,6 @@
-import InputAdornment from '@mui/material/InputAdornment';
-import TextField from '@mui/material/TextField';
-import { Controller, useFormContext } from 'react-hook-form';
+import InputAdornment from "@mui/material/InputAdornment";
+import TextField from "@mui/material/TextField";
+import { Controller, useFormContext } from "react-hook-form";
 
 function PricingTab(props) {
   const methods = useFormContext();
@@ -18,7 +18,9 @@ function PricingTab(props) {
             label="Tax Excluded Price"
             id="priceTaxExcl"
             InputProps={{
-              startAdornment: <InputAdornment position="start">$</InputAdornment>,
+              startAdornment: (
+                <InputAdornment position="start">$</InputAdornment>
+              ),
             }}
             type="number"
             variant="outlined"
@@ -38,7 +40,9 @@ function PricingTab(props) {
             label="Tax Included Price"
             id="priceTaxIncl"
             InputProps={{
-              startAdornment: <InputAdornment position="start">$</InputAdornment>,
+              startAdornment: (
+                <InputAdornment position="start">$</InputAdornment>
+              ),
             }}
             type="number"
             variant="outlined"
@@ -57,7 +61,9 @@ function PricingTab(props) {
             label="Tax Rate"
             id="taxRate"
             InputProps={{
-              startAdornment: <InputAdornment position="start">$</InputAdornment>,
+              startAdornment: (
+                <InputAdornment position="start">$</InputAdornment>
+              ),
             }}
             type="number"
             variant="outlined"
@@ -76,7 +82,9 @@ function PricingTab(props) {
             label="Compared Price"
             id="comparedPrice"
             InputProps={{
-              startAdornment: <InputAdornment position="start">$</InputAdornment>,
+              startAdornment: (
+                <InputAdornment position="start">$</InputAdornment>
+              ),
             }}
             type="number"
             variant="outlined"

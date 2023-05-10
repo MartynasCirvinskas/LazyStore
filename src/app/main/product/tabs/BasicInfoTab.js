@@ -103,6 +103,23 @@ function BasicInfoTab(props) {
           />
         )}
       />
+      <Controller
+        name="comments"
+        control={control}
+        render={({ field }) => (
+          <TextField
+            {...field}
+            className="mt-8 mb-16"
+            id="comments"
+            label="Comments"
+            type="text"
+            multiline
+            rows={5}
+            variant="outlined"
+            fullWidth
+          />
+        )}
+      />
     </div>
   );
 }

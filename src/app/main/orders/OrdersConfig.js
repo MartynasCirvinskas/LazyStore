@@ -1,6 +1,6 @@
-import Example from './Example';
+import Orders from "./Orders";
 
-const ExampleConfig = {
+const OrdersConfig = {
   settings: {
     layout: {
       config: {},
@@ -8,13 +8,13 @@ const ExampleConfig = {
   },
   routes: [
     {
-      path: 'example',
-      element: <Example />,
+      path: "orders",
+      element: <Orders />,
     },
   ],
 };
 
-export default ExampleConfig;
+export default OrdersConfig;
 
 /**
  * Lazy load Example
