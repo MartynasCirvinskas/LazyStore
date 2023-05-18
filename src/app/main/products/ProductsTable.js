@@ -13,20 +13,20 @@ import { useEffect, useState } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
 import withRouter from "@fuse/core/withRouter";
-import FuseLoading from "@fuse/core/FuseLoading";
-import FuseSvgIcon from "@fuse/core/FuseSvgIcon";
 import {
     getProducts,
     selectProducts,
     selectProductsSearchText,
 } from "../store/productsSlice";
+import FuseLoading from "@fuse/core/FuseLoading";
+import FuseSvgIcon from "@fuse/core/FuseSvgIcon";
+
 import ProductsTableHead from "./ProductsTableHead";
 
 function ProductsTable(props) {
     const dispatch = useDispatch();
     const products = useSelector(selectProducts);
     const searchText = useSelector(selectProductsSearchText);
-    console.log(searchText);
 
     const [loading, setLoading] = useState(true);
     const [selected, setSelected] = useState([]);
@@ -91,7 +91,7 @@ function ProductsTable(props) {
 
     function handleSelectAllClick(event) {
         if (event.target.checked) {
-            setSelected(data.map((n) => n.id));
+            setSelected(data.map((n) => n.product_id));
             return;
         }
         setSelected([]);
@@ -195,7 +195,7 @@ function ProductsTable(props) {
                             )
                             .map((n) => {
                                 const isSelected =
-                                    selected.indexOf(n.id) !== -1;
+                                    selected.indexOf(n.product_id) !== -1;
                                 return (
                                     <TableRow
                                         className="h-72 cursor-pointer"
@@ -217,7 +217,10 @@ function ProductsTable(props) {
                                                     event.stopPropagation()
                                                 }
                                                 onChange={(event) =>
-                                                    handleCheck(event, n.id)
+                                                    handleCheck(
+                                                        event,
+                                                        n.product_id,
+                                                    )
                                                 }
                                             />
                                         </TableCell>

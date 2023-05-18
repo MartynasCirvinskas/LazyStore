@@ -1,125 +1,80 @@
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
 import { Controller, useFormContext } from "react-hook-form";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import {
+    Table,
+    TableBody,
+    TableCell,
+    TableContainer,
+    TableHead,
+    TableRow,
+} from "@mui/material";
+import {
+    selectProductsByIds,
+    getProducts,
+    selectProducts,
+} from "../../store/productsSlice";
 
 function ProductsTab(props) {
+    const dispatch = useDispatch();
     const methods = useFormContext();
+    const products = useSelector(selectProducts);
     const { control, formState } = methods;
+    const [loading, setLoading] = useState(true);
+    const [selected, setSelected] = useState([]);
     const { errors } = formState;
+    // const productIds = formState.defaultValues.products.map(
+    //     (product) => product.product_id,
+    // );
+    // const enrichedProducts = useSelector((state) =>
+    //     selectProductsByIds(state, productIds),
+    // );
+
+    useEffect(() => {
+        if (products.length === 0) {
+            dispatch(getProducts()).then(() => setLoading(false));
+        } else {
+            setLoading(false);
+        }
+    }, [dispatch, products]);
+
+    const combinedProducts = formState.defaultValues.products.map((product) => {
+        const detailedProduct = products.find(
+            (products) => products.product_id === product.product_id,
+        );
+        return { ...product, ...detailedProduct };
+    });
+
+    console.log("BasicInfoTab");
+    console.log(formState.defaultValues.products);
+    console.log(combinedProducts);
+
+    console.log("*****************************");
 
     return (
         <div>
-            <Controller
-                name="purchase_title"
-                control={control}
-                render={({ field }) => (
-                    <TextField
-                        {...field}
-                        className="mt-8 mb-16"
-                        error={!!errors.name}
-                        required
-                        helperText={errors?.name?.message}
-                        label="Name"
-                        autoFocus
-                        id="purchase_title"
-                        variant="outlined"
-                        fullWidth
-                    />
-                )}
-            />
-
-            <Controller
-                name="description"
-                control={control}
-                render={({ field }) => (
-                    <TextField
-                        {...field}
-                        className="mt-8 mb-16"
-                        id="description"
-                        label="Description"
-                        type="text"
-                        multiline
-                        rows={5}
-                        variant="outlined"
-                        fullWidth
-                    />
-                )}
-            />
-
-            <Controller
-                name="sku_list"
-                control={control}
-                defaultValue={[]}
-                render={({ field: { onChange, value } }) => (
-                    <Autocomplete
-                        className="mt-8 mb-16"
-                        multiple
-                        freeSolo
-                        options={[]}
-                        value={value}
-                        onChange={(event, newValue) => {
-                            onChange(newValue);
-                        }}
-                        renderInput={(params) => (
-                            <TextField
-                                {...params}
-                                placeholder=""
-                                label="SKU's"
-                                variant="outlined"
-                                InputLabelProps={{
-                                    shrink: true,
-                                }}
-                            />
-                        )}
-                    />
-                )}
-            />
-
-            <Controller
-                name="ean_list"
-                control={control}
-                defaultValue={[]}
-                render={({ field: { onChange, value } }) => (
-                    <Autocomplete
-                        className="mt-8 mb-16"
-                        multiple
-                        freeSolo
-                        options={[]}
-                        value={value}
-                        onChange={(event, newValue) => {
-                            onChange(newValue);
-                        }}
-                        renderInput={(params) => (
-                            <TextField
-                                {...params}
-                                placeholder=""
-                                label="EAN's"
-                                variant="outlined"
-                                InputLabelProps={{
-                                    shrink: true,
-                                }}
-                            />
-                        )}
-                    />
-                )}
-            />
-            <Controller
-                name="comments"
-                control={control}
-                render={({ field }) => (
-                    <TextField
-                        {...field}
-                        className="mt-8 mb-16"
-                        id="comments"
-                        label="Comments"
-                        type="text"
-                        multiline
-                        rows={5}
-                        variant="outlined"
-                        fullWidth
-                    />
-                )}
-            />
+            <Table>
+                <TableHead>
+                    <TableRow>
+                        <TableCell>Image</TableCell>
+                        <TableCell>Amount</TableCell>
+                        <TableCell>Price</TableCell>
+                        <TableCell>Title</TableCell>
+                    </TableRow>
+                </TableHead>
+                <TableBody>
+                    {combinedProducts.map((product, index) => (
+                        <TableRow key={index}>
+                            <TableCell>{product.product_id}</TableCell>
+                            <TableCell>{product.amount}</TableCell>
+                            <TableCell>{product.price}</TableCell>
+                            <TableCell>{product.product_title}</TableCell>
+                        </TableRow>
+                    ))}
+                </TableBody>
+            </Table>
         </div>
     );
 }

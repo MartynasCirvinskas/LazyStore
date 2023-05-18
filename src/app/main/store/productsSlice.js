@@ -51,6 +51,9 @@ const productsSlice = createSlice({
     },
 });
 
+export const selectProductsByIds = (state, productIds) =>
+    productIds.map((id) => selectProductById(state, id));
+
 export const { setProductsSearchText } = productsSlice.actions;
 
 export const selectProductsSearchText = ({ eCommerceApp }) => {
