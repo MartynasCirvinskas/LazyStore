@@ -1,51 +1,36 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import axios from "axios";
-import FuseUtils from "@fuse/utils";
-import { selectProducts } from "./productsSlice"; // Make sure to use the correct path to your productsSlice
+// ...your other imports and actions
 
-// ...
+export const removeCommentFromProduct = createAsyncThunk(
+    "eCommerceApp/product/removeComment",
+    async ({ productId, index }, { dispatch, getState }) => {
+        // You could make an API call here to remove the comment from the product on the server
+        // For now, we'll just remove the comment in the local state
 
-export const addCommentToProduct = createAsyncThunk(
-    "eCommerceApp/product/addComment",
-    async ({ productId, comment }, { dispatch, getState }) => {
-        // You could make an API call here to add the comment to the product on the server
-        // For now, we'll just add the comment in the local state
-
-        return { productId, comment };
+        return { productId, index };
     },
 );
 
-// ...
-
 const productSlice = createSlice({
-    name: "eCommerceApp/product",
-    initialState: null,
+    // ...your other reducers and actions
     reducers: {
-        // ...
-        addComment: (state, action) => {
+        // ...your other reducers
+        removeComment: (state, action) => {
             if (state && state.id === action.payload.productId) {
-                if (!state.comments) {
-                    state.comments = [];
-                }
-                state.comments.push(action.payload.comment);
+                state.comments.splice(action.payload.index, 1);
             }
         },
     },
     extraReducers: {
-        // ...
-        [addCommentToProduct.fulfilled]: (state, action) => {
+        // ...your other extraReducers
+        [removeCommentFromProduct.fulfilled]: (state, action) => {
             if (state && state.id === action.payload.productId) {
-                if (!state.comments) {
-                    state.comments = [];
-                }
-                state.comments.push(action.payload.comment);
+                state.comments.splice(action.payload.index, 1);
             }
         },
     },
 });
 
-export const { newProduct, resetProduct, addComment } = productSlice.actions;
+export const { newProduct, resetProduct, addComment, removeComment } =
+    productSlice.actions;
 
-export const selectProduct = ({ eCommerceApp }) => eCommerceApp.product;
-
-export default productSlice.reducer;
+// ...the rest of your Redux slice
