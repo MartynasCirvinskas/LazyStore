@@ -49,6 +49,27 @@ export const saveProduct = createAsyncThunk(
     },
 );
 
+export const addCommentToProduct = createAsyncThunk(
+    "eCommerceApp/product/addComment",
+    async ({ productId, comment }, { dispatch, getState }) => {
+        console.log("store");
+        console.log(productId, comment);
+        // You could make an API call here to add the comment to the product on the server
+        // For now, we'll just add the comment in the local state
+
+        return { productId, comment };
+    },
+);
+export const removeCommentFromProduct = createAsyncThunk(
+    "eCommerceApp/product/removeComment",
+    async ({ productId, index }, { dispatch, getState }) => {
+        // You could make an API call here to remove the comment from the product on the server
+        // For now, we'll just remove the comment in the local state
+
+        return { productId, index };
+    },
+);
+
 const productSlice = createSlice({
     name: "eCommerceApp/product",
     initialState: null,
@@ -80,15 +101,42 @@ const productSlice = createSlice({
                 },
             }),
         },
+        addComment: (state, action) => {
+            if (state && state.product_id === action.payload.productId) {
+                if (!state.comments) {
+                    state.comments = [];
+                }
+                state.comments.push(action.payload.comment);
+            }
+        },
+        removeComment: (state, action) => {
+            if (state && state.id === action.payload.productId) {
+                state.comments.splice(action.payload.index, 1);
+            }
+        },
     },
     extraReducers: {
         [getProduct.fulfilled]: (state, action) => action.payload,
         [saveProduct.fulfilled]: (state, action) => action.payload,
         [removeProduct.fulfilled]: (state, action) => null,
+        [addCommentToProduct.fulfilled]: (state, action) => {
+            if (state && state.product_id === action.payload.productId) {
+                if (!state.comments) {
+                    state.comments = [];
+                }
+                state.comments.push(action.payload.comment);
+            }
+        },
+        [removeCommentFromProduct.fulfilled]: (state, action) => {
+            if (state && state.id === action.payload.productId) {
+                state.comments.splice(action.payload.index, 1);
+            }
+        },
     },
 });
 
-export const { newProduct, resetProduct } = productSlice.actions;
+export const { newProduct, resetProduct, addComment, removeComment } =
+    productSlice.actions;
 
 export const selectProduct = ({ eCommerceApp }) => eCommerceApp.product;
 

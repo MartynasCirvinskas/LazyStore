@@ -5,18 +5,33 @@ import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
 import Grid from "@mui/material/Grid";
+import { addCommentToProduct } from "../store/productSlice";
+import { useDispatch } from "react-redux";
+import { selectProduct } from "../store/productSlice";
+import { useSelector } from "react-redux";
+import { removeCommentFromProduct } from "../store/productSlice";
 
 function CommentSection({ product }) {
-    const [comments, setComments] = useState(product.comments || []);
     const [newComment, setNewComment] = useState("");
+    const dispatch = useDispatch();
+    const productInStore = useSelector(selectProduct);
+    const comments = productInStore.comments || [];
 
     const handleAddComment = () => {
         const comment = {
             text: newComment,
             date: new Date().toISOString(),
         };
-        setComments([...comments, comment]);
+        dispatch(
+            addCommentToProduct({ productId: product.product_id, comment }),
+        );
         setNewComment("");
+    };
+
+    const handleRemoveComment = (index) => {
+        dispatch(
+            removeCommentFromProduct({ productId: product.product_id, index }),
+        );
     };
 
     return (
@@ -31,6 +46,9 @@ function CommentSection({ product }) {
                                     comment.date,
                                 ).toLocaleString()}
                             />
+                            <Button onClick={() => handleRemoveComment(index)}>
+                                Remove Comment
+                            </Button>
                         </ListItem>
                     ))}
                 </List>
