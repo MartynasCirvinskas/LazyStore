@@ -47,7 +47,7 @@ export const saveProduct = createAsyncThunk(
 
         const response = await axios.post(
             `http://127.0.0.1:5000/product/${id}`,
-            productData,
+            formData,
 
             {
                 headers: {
