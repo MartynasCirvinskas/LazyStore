@@ -25,9 +25,6 @@ import reducer from "../store";
 import ProductHeader from "./ProductHeader";
 import BasicInfoTab from "./tabs/BasicInfoTab";
 import InventoryTab from "./tabs/InventoryTab";
-import PricingTab from "./tabs/PricingTab";
-// import ProductImagesTab from './tabs/ProductImagesTab';
-import ShippingTab from "./tabs/ShippingTab";
 
 /**
  * Form Validation Schema
@@ -85,10 +82,6 @@ function Product(props) {
     }, [dispatch, routeParams]);
 
     useEffect(() => {
-        console.log("Product");
-        console.log(product);
-        console.log(routeParams);
-        console.log("*****************************");
         if (!product) {
             return;
         }
@@ -169,30 +162,15 @@ function Product(props) {
                             classes={{ root: "w-full h-64 border-b-1" }}
                         >
                             <Tab className="h-64" label="Basic Info" />
-                            <Tab className="h-64" label="Product Images" />
-                            <Tab className="h-64" label="Pricing" />
                             <Tab className="h-64" label="Inventory" />
-                            <Tab className="h-64" label="Shipping" />
                         </Tabs>
                         <div className="p-16 sm:p-24 max-w-3xl">
                             <div className={tabValue !== 0 ? "hidden" : ""}>
                                 <BasicInfoTab />
                             </div>
 
-                            {/* <div className={tabValue !== 1 ? 'hidden' : ''}>
-                <ProductImagesTab />
-              </div> */}
-
-                            <div className={tabValue !== 2 ? "hidden" : ""}>
-                                <PricingTab />
-                            </div>
-
                             <div className={tabValue !== 3 ? "hidden" : ""}>
                                 <InventoryTab />
-                            </div>
-
-                            <div className={tabValue !== 4 ? "hidden" : ""}>
-                                <ShippingTab />
                             </div>
                         </div>
                     </>

@@ -2,16 +2,34 @@ import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
 import { Controller, useFormContext } from "react-hook-form";
 import CommentSection from "../../comment/CommentSection";
+import { useState } from "react";
 
 function BasicInfoTab(props) {
     const methods = useFormContext();
     const { control, formState } = methods;
+    const { product_id } = formState.defaultValues;
     const { errors } = formState;
-    console.log("BasicInfoTab");
-    console.log(formState);
+
+    // State for storing the image file
+    const [imageFile, setImageFile] = useState(
+        `assets/images/products/${product_id}.jpg`,
+    );
+
+    // Getting product id from default values
+
+    const handleImageUpload = (event) => {
+        setImageFile(URL.createObjectURL(event.target.files[0]));
+    };
 
     return (
         <div>
+            <div className="image-upload-container">
+                {imageFile ? (
+                    <img src={imageFile} alt="Product" />
+                ) : (
+                    <input type="file" onChange={handleImageUpload} />
+                )}
+            </div>
             <Controller
                 name="product_title"
                 control={control}
@@ -30,23 +48,7 @@ function BasicInfoTab(props) {
                     />
                 )}
             />
-            <Controller
-                name="description"
-                control={control}
-                render={({ field }) => (
-                    <TextField
-                        {...field}
-                        className="mt-8 mb-16"
-                        id="description"
-                        label="Description"
-                        type="text"
-                        multiline
-                        rows={5}
-                        variant="outlined"
-                        fullWidth
-                    />
-                )}
-            />
+
             <Controller
                 name="sku_list"
                 control={control}

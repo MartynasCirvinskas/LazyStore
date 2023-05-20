@@ -47,12 +47,6 @@ function ProductsTab(props) {
         return { ...product, ...detailedProduct };
     });
 
-    console.log("BasicInfoTab");
-    console.log(formState.defaultValues.products);
-    console.log(combinedProducts);
-
-    console.log("*****************************");
-
     return (
         <div>
             <Table>

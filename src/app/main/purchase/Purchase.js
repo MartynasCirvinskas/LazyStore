@@ -81,10 +81,6 @@ function Purchase(props) {
     }, [dispatch, routeParams]);
 
     useEffect(() => {
-        console.log("Purchase");
-        console.log(purchase);
-        console.log(routeParams);
-        console.log("*****************************");
         if (!purchase) {
             return;
         }

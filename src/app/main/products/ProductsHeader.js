@@ -57,7 +57,7 @@ function ProductsHeader(props) {
                     <Button
                         className=""
                         component={Link}
-                        to="/apps/e-commerce/products/new"
+                        to="/products/new"
                         variant="contained"
                         color="secondary"
                         startIcon={

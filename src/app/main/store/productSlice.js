@@ -52,21 +52,67 @@ export const saveProduct = createAsyncThunk(
 export const addCommentToProduct = createAsyncThunk(
     "eCommerceApp/product/addComment",
     async ({ productId, comment }, { dispatch, getState }) => {
-        console.log("store");
-        console.log(productId, comment);
-        // You could make an API call here to add the comment to the product on the server
-        // For now, we'll just add the comment in the local state
+        console.log("addCommentToProduct");
 
+        // Fetch the current state
+        const state = getState().eCommerceApp.product;
+        let currentComments = [];
+
+        // If the current product has comments, copy them to the currentComments array
+        if (state && state.product_id === productId && state.comments) {
+            currentComments = [...state.comments];
+        }
+
+        // Add the new comment to the currentComments array
+        currentComments.push(comment);
+
+        console.log("Current comments:", currentComments);
+
+        // Make an API call to add the comment to the product on the server
+        const response = await axios.post(
+            `http://127.0.0.1:5000/product_comment/${productId}`,
+            {
+                comments: currentComments, // Send the entire updated comments array
+            },
+        );
+
+        // The server should ideally return the updated product data
+        const data = await response.data;
+
+        // For now, we'll also add the comment in the local state
         return { productId, comment };
     },
 );
+
 export const removeCommentFromProduct = createAsyncThunk(
     "eCommerceApp/product/removeComment",
     async ({ productId, index }, { dispatch, getState }) => {
-        // You could make an API call here to remove the comment from the product on the server
-        // For now, we'll just remove the comment in the local state
+        // Get the product from the state
+        const product = selectProduct(getState());
 
-        return { productId, index };
+        // Ensure there are comments and the product is the correct one
+        if (!product || product.product_id !== productId || !product.comments) {
+            throw new Error("Invalid product or no comments to remove");
+        }
+
+        // Remove the comment at the given index
+        const updatedComments = product.comments.filter(
+            (_, commentIndex) => commentIndex !== index,
+        );
+
+        // Make an API call to update the comments on the product on the server
+        const response = await axios.post(
+            `http://127.0.0.1:5000/product_comment/${productId}`,
+            {
+                comments: updatedComments, // Send the entire updated comments array
+            },
+        );
+
+        // The server should ideally return the updated product data
+        const data = await response.data;
+
+        // For now, we'll just update the comments in the local state
+        return { productId, updatedComments };
     },
 );
 
@@ -81,22 +127,10 @@ const productSlice = createSlice({
                 payload: {
                     id: FuseUtils.generateGUID(),
                     name: "",
-                    handle: "",
-                    description: "",
-                    categories: [],
-                    tags: [],
-                    images: [],
-                    priceTaxExcl: 0,
-                    priceTaxIncl: 0,
-                    taxRate: 0,
-                    comparedPrice: 0,
                     quantity: 0,
-                    sku: "",
-                    width: "",
-                    height: "",
-                    depth: "",
-                    weight: "",
-                    extraShippingFee: 0,
+                    sku_list: [],
+                    ean_list: [],
+                    comments: [],
                     active: true,
                 },
             }),
@@ -110,7 +144,7 @@ const productSlice = createSlice({
             }
         },
         removeComment: (state, action) => {
-            if (state && state.id === action.payload.productId) {
+            if (state && state.product_id === action.payload.productId) {
                 state.comments.splice(action.payload.index, 1);
             }
         },
@@ -128,7 +162,7 @@ const productSlice = createSlice({
             }
         },
         [removeCommentFromProduct.fulfilled]: (state, action) => {
-            if (state && state.id === action.payload.productId) {
+            if (state && state.product_id === action.payload.productId) {
                 state.comments.splice(action.payload.index, 1);
             }
         },
