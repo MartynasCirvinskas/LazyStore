@@ -27,8 +27,9 @@ export const getProduct = createAsyncThunk(
 export const removeProduct = createAsyncThunk(
     "eCommerceApp/product/removeProduct",
     async (val, { dispatch, getState }) => {
-        const { id } = getState().eCommerceApp.product;
-        await axios.delete(`/api/ecommerce/products/${id}`);
+        console.log(getState());
+        const { product_id } = getState().eCommerceApp.product;
+        await axios.delete(`http://127.0.0.1:5000/product/${product_id}`);
         return id;
     },
 );
@@ -36,8 +37,7 @@ export const removeProduct = createAsyncThunk(
 export const saveProduct = createAsyncThunk(
     "eCommerceApp/product/saveProduct",
     async (productData, { dispatch, getState }) => {
-        const { id } = getState().eCommerceApp;
-        console.log("saveProduct", productData);
+        const { product_id } = getState().eCommerceApp.product;
 
         // Create a FormData object and append all fields of productData to it
         const formData = new FormData();
@@ -46,8 +46,8 @@ export const saveProduct = createAsyncThunk(
         });
 
         const response = await axios.post(
-            `http://127.0.0.1:5000/product/${id}`,
-            formData,
+            `http://127.0.0.1:5000/product/${product_id}`,
+            formData, // Use the formData object instead of productData
 
             {
                 headers: {
@@ -65,8 +65,6 @@ export const saveProduct = createAsyncThunk(
 export const addCommentToProduct = createAsyncThunk(
     "eCommerceApp/product/addComment",
     async ({ productId, comment }, { dispatch, getState }) => {
-        console.log("addCommentToProduct");
-
         // Fetch the current state
         const state = getState().eCommerceApp.product;
         let currentComments = [];
@@ -78,8 +76,6 @@ export const addCommentToProduct = createAsyncThunk(
 
         // Add the new comment to the currentComments array
         currentComments.push(comment);
-
-        console.log("Current comments:", currentComments);
 
         // Make an API call to add the comment to the product on the server
         const response = await axios.post(

@@ -26,7 +26,7 @@ function BasicInfoTab(props) {
 
     const handleImageUpload = (event) => {
         // Save the File object to the state
-        setImageFile(event.target.files[0]);
+        formState.defaultValues.imageFile = event.target.files[0];
     };
 
     const [imageExists, setImageExists] = useState(true);
@@ -166,7 +166,9 @@ function BasicInfoTab(props) {
                     />
                 )}
             />
-            <CommentSection product={formState.defaultValues} />
+            {formState.defaultValues.product_title && (
+                <CommentSection product={formState.defaultValues} />
+            )}
         </div>
     );
 }
