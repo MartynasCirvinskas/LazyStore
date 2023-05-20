@@ -37,10 +37,23 @@ export const saveProduct = createAsyncThunk(
     "eCommerceApp/product/saveProduct",
     async (productData, { dispatch, getState }) => {
         const { id } = getState().eCommerceApp;
+        console.log("saveProduct", productData);
 
-        const response = await axios.put(
-            `/api/ecommerce/products/${id}`,
+        // Create a FormData object and append all fields of productData to it
+        const formData = new FormData();
+        Object.keys(productData).forEach((key) => {
+            formData.append(key, productData[key]);
+        });
+
+        const response = await axios.post(
+            `http://127.0.0.1:5000/product/${id}`,
             productData,
+
+            {
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                },
+            },
         );
 
         const data = await response.data;
