@@ -9,9 +9,9 @@ import FuseSvgIcon from "@fuse/core/FuseSvgIcon";
 import {
     selectProductsSearchText,
     setProductsSearchText,
-} from "../store/productsSlice";
+} from "../../../store/productsSlice";
 
-function ProductsHeader(props) {
+function AddNewProductsHeader(props) {
     const dispatch = useDispatch();
     const searchText = useSelector(selectProductsSearchText);
 
@@ -22,9 +22,9 @@ function ProductsHeader(props) {
                 initial={{ x: -20 }}
                 animate={{ x: 0, transition: { delay: 0.2 } }}
                 delay={300}
-                className="text-24 md:text-32 font-extrabold tracking-tight"
+                className="text-16 md:text-16 font-extrabold tracking-tight"
             >
-                Products
+                Search Products
             </Typography>
 
             <div className="flex flex-col w-full sm:w-auto sm:flex-row space-y-16 sm:space-y-0 flex-1 items-center justify-end space-x-8">
@@ -50,26 +50,9 @@ function ProductsHeader(props) {
                         onChange={(ev) => dispatch(setProductsSearchText(ev))}
                     />
                 </Paper>
-                <motion.div
-                    initial={{ opacity: 0, x: 20 }}
-                    animate={{ opacity: 1, x: 0, transition: { delay: 0.2 } }}
-                >
-                    <Button
-                        className=""
-                        component={Link}
-                        to="/apps/e-commerce/products/new"
-                        variant="contained"
-                        color="secondary"
-                        startIcon={
-                            <FuseSvgIcon>heroicons-outline:plus</FuseSvgIcon>
-                        }
-                    >
-                        Add
-                    </Button>
-                </motion.div>
             </div>
         </div>
     );
 }
 
-export default ProductsHeader;
+export default AddNewProductsHeader;

@@ -15,7 +15,7 @@ import {
     selectProductsByIds,
     getProducts,
     selectProducts,
-} from "../../store/productsSlice";
+} from "../../../store/productsSlice";
 
 function ProductsTab(props) {
     const dispatch = useDispatch();
@@ -25,12 +25,6 @@ function ProductsTab(props) {
     const [loading, setLoading] = useState(true);
     const [selected, setSelected] = useState([]);
     const { errors } = formState;
-    // const productIds = formState.defaultValues.products.map(
-    //     (product) => product.product_id,
-    // );
-    // const enrichedProducts = useSelector((state) =>
-    //     selectProductsByIds(state, productIds),
-    // );
 
     useEffect(() => {
         if (products.length === 0) {

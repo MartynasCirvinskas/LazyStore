@@ -1,36 +1,47 @@
-// ...your other imports and actions
+import { useState, useEffect } from "react";
 
-export const removeCommentFromProduct = createAsyncThunk(
-    "eCommerceApp/product/removeComment",
-    async ({ productId, index }, { dispatch, getState }) => {
-        // You could make an API call here to remove the comment from the product on the server
-        // For now, we'll just remove the comment in the local state
+function AddNewProducts() {
+    // ...
 
-        return { productId, index };
-    },
-);
+    const selectedProductId = useSelector(selectSelectedProduct);
+    const [productId, setProductId] = useState("");
 
-const productSlice = createSlice({
-    // ...your other reducers and actions
-    reducers: {
-        // ...your other reducers
-        removeComment: (state, action) => {
-            if (state && state.id === action.payload.productId) {
-                state.comments.splice(action.payload.index, 1);
-            }
-        },
-    },
-    extraReducers: {
-        // ...your other extraReducers
-        [removeCommentFromProduct.fulfilled]: (state, action) => {
-            if (state && state.id === action.payload.productId) {
-                state.comments.splice(action.payload.index, 1);
-            }
-        },
-    },
-});
+    useEffect(() => {
+        if (selectedProductId) {
+            setProductId(selectedProductId);
+        }
+    }, [selectedProductId]);
 
-export const { newProduct, resetProduct, addComment, removeComment } =
-    productSlice.actions;
+    // ...
 
-// ...the rest of your Redux slice
+    const handleButtonClick = handleSubmit((data) => {
+        const product = {
+            product_id: productId, // Use productId instead of data.productId
+            ordered_amount: data.orderedAmount,
+            price: data.price,
+        };
+
+        // ...
+
+        // Reset the local state
+        setProductId("");
+
+        // ...
+    });
+
+    // ...
+
+    <Controller
+        name="productId"
+        control={control}
+        defaultValue=""
+        render={({ field }) => (
+            <TextField
+                {...field}
+                value={productId || field.value} // Use productId instead of selectedProductId
+                // ...
+            />
+        )}
+    />;
+    // ...
+}

@@ -24,7 +24,8 @@ import {
 import reducer from "../store";
 import PurchaseHeader from "./PurchaseHeader";
 import BasicInfoTab from "./tabs/BasicInfoTab";
-import ProductsTab from "./tabs/ProductsTab";
+import ProductsTab from "./tabs/Products/ProductsTab";
+import AddNewProducts from "./tabs/AddNewProducts/AddNewProducts";
 /**
  * Form Validation Schema
  */
@@ -163,6 +164,7 @@ function Purchase(props) {
                         >
                             <Tab className="h-64" label="Basic Info" />
                             <Tab className="h-64" label="Products" />
+                            <Tab className="h-64" label="Add New Products" />
                         </Tabs>
                         <div className="p-16 sm:p-24 max-w-3xl">
                             <div className={tabValue !== 0 ? "hidden" : ""}>
@@ -170,6 +172,9 @@ function Purchase(props) {
                             </div>
                             <div className={tabValue !== 1 ? "hidden" : ""}>
                                 <ProductsTab />
+                            </div>
+                            <div className={tabValue !== 2 ? "hidden" : ""}>
+                                <AddNewProducts />
                             </div>
                         </div>
                     </>

@@ -82,6 +82,12 @@ const purchaseSlice = createSlice({
                 },
             }),
         },
+        addProductToPurchase: (state, action) => {
+            // If state is not null, push the new product to the products array
+            if (state) {
+                state.products.push(action.payload);
+            }
+        },
     },
     extraReducers: {
         [getPurchase.fulfilled]: (state, action) => action.payload,
@@ -90,7 +96,8 @@ const purchaseSlice = createSlice({
     },
 });
 
-export const { newPurchase, resetPurchase } = purchaseSlice.actions;
+export const { newPurchase, resetPurchase, addProductToPurchase } =
+    purchaseSlice.actions;
 
 export const selectPurchase = ({ eCommerceApp }) => eCommerceApp.purchase;
 

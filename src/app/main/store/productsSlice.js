@@ -35,6 +35,7 @@ const productsSlice = createSlice({
     name: "eCommerceApp/products",
     initialState: productsAdapter.getInitialState({
         searchText: "",
+        selectedProductId: "", // Add this line
     }),
     reducers: {
         setProductsSearchText: {
@@ -42,6 +43,13 @@ const productsSlice = createSlice({
                 state.searchText = action.payload;
             },
             prepare: (event) => ({ payload: event.target.value || "" }),
+        },
+        selectProduct: (state, action) => {
+            // Add this reducer
+            state.selectedProductId = action.payload;
+        },
+        resetSelectedProductId: (state) => {
+            state.selectedProductId = null;
         },
     },
     extraReducers: {
@@ -54,10 +62,14 @@ const productsSlice = createSlice({
 export const selectProductsByIds = (state, productIds) =>
     productIds.map((id) => selectProductById(state, id));
 
-export const { setProductsSearchText } = productsSlice.actions;
+export const { setProductsSearchText, selectProduct, resetSelectedProductId } =
+    productsSlice.actions;
 
 export const selectProductsSearchText = ({ eCommerceApp }) => {
     return eCommerceApp.products.searchText;
 };
+
+export const selectSelectedProduct = (state) =>
+    state.eCommerceApp.products.selectedProductId; // Add this selector
 
 export default productsSlice.reducer;
