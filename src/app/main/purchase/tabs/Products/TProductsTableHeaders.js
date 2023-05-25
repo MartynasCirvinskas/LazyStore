@@ -15,7 +15,7 @@ import { Box } from "@mui/system";
 import TableHead from "@mui/material/TableHead";
 import FuseSvgIcon from "@fuse/core/FuseSvgIcon";
 import { lighten } from "@mui/material/styles";
-import { removePurchases } from "../store/purchasesSlice";
+import { removeProducts } from "../../../store/productsSlice";
 
 const rows = [
     {
@@ -36,37 +36,37 @@ const rows = [
         id: "categories",
         align: "left",
         disablePadding: false,
-        label: "Category",
+        label: "Ordered Amount",
         sort: true,
     },
     {
         id: "priceTaxIncl",
         align: "right",
         disablePadding: false,
-        label: "Price",
+        label: "Received Amount",
         sort: true,
     },
     {
         id: "quantity",
         align: "right",
         disablePadding: false,
-        label: "Quantity",
+        label: "Price",
         sort: true,
     },
     {
         id: "active",
         align: "right",
         disablePadding: false,
-        label: "Active",
+        label: "Comments",
         sort: true,
     },
 ];
 
-function PurchasesTableHead(props) {
+function TProductsTableHeaders(props) {
     const { selectedProductIds } = props;
     const numSelected = selectedProductIds.length;
 
-    const [selectedPurchasesMenu, setSelectedPurchasesMenu] = useState(null);
+    const [selectedProductsMenu, setSelectedProductsMenu] = useState(null);
 
     const dispatch = useDispatch();
 
@@ -74,12 +74,12 @@ function PurchasesTableHead(props) {
         props.onRequestSort(event, property);
     };
 
-    function openSelectedPurchasesMenu(event) {
-        setSelectedPurchasesMenu(event.currentTarget);
+    function openSelectedProductsMenu(event) {
+        setSelectedProductsMenu(event.currentTarget);
     }
 
-    function closeSelectedPurchasesMenu() {
-        setSelectedPurchasesMenu(null);
+    function closeSelectedProductsMenu() {
+        setSelectedProductsMenu(null);
     }
 
     return (
@@ -118,12 +118,12 @@ function PurchasesTableHead(props) {
                         >
                             <IconButton
                                 aria-owns={
-                                    selectedPurchasesMenu
-                                        ? "selectedPurchasesMenu"
+                                    selectedProductsMenu
+                                        ? "selectedProductsMenu"
                                         : null
                                 }
                                 aria-haspopup="true"
-                                onClick={openSelectedPurchasesMenu}
+                                onClick={openSelectedProductsMenu}
                                 size="large"
                             >
                                 <FuseSvgIcon>
@@ -131,21 +131,21 @@ function PurchasesTableHead(props) {
                                 </FuseSvgIcon>
                             </IconButton>
                             <Menu
-                                id="selectedPurchasesMenu"
-                                anchorEl={selectedPurchasesMenu}
-                                open={Boolean(selectedPurchasesMenu)}
-                                onClose={closeSelectedPurchasesMenu}
+                                id="selectedProductsMenu"
+                                anchorEl={selectedProductsMenu}
+                                open={Boolean(selectedProductsMenu)}
+                                onClose={closeSelectedProductsMenu}
                             >
                                 <MenuList>
                                     <MenuItem
                                         onClick={() => {
                                             dispatch(
-                                                removePurchases(
+                                                removeProducts(
                                                     selectedProductIds,
                                                 ),
                                             );
                                             props.onMenuItemClick();
-                                            closeSelectedPurchasesMenu();
+                                            closeSelectedProductsMenu();
                                         }}
                                     >
                                         <ListItemIcon className="min-w-40">
@@ -213,4 +213,4 @@ function PurchasesTableHead(props) {
     );
 }
 
-export default PurchasesTableHead;
+export default TProductsTableHeaders;
